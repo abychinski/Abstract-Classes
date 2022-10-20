@@ -6,10 +6,4 @@
     <RootNamespace>Abstract_Classes</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Update="movie.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

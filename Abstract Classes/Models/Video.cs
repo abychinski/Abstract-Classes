@@ -9,49 +9,54 @@ namespace Abstract_Classes.Models
 {
     public class Video : Media
     {
-        string file = "video.csv";
-        private List<Video> _video;
-        // TODO need to add properties
-        string Format;
-        string Length;
-        string Regions;
+        public string Format { get; set; }
+        public int Length { get; set; }
 
-        public Video()
-        {
-            _video = new List<Video>();
-            Read();
-        }
+        public int[] Regions { get; set; }
+
+        List<int> videoIds = new List<int>();
+        List<string> videoTitles = new List<string>();
+        List<string> videoFormats = new List<string>();
+        List<int> videoLengths = new List<int>();
+        List<string> videoRegions = new List<string>();
+
+
 
         public override void Display()
         {
-            foreach (var video in _video)
+            for (int i = 0; i < videoIds.Count; i++)
             {
-                Console.WriteLine($"ID: {video.Id}, Title: {video.Title}, Format: {video.Format}, Length: {video.Length}, Region: {video.Regions}");
-
+                Console.WriteLine($"Id: {videoIds[i]}");
+                Console.WriteLine($"Title: {videoTitles[i]}");
+                Console.WriteLine($"Format(s): {videoFormats[i]}");
+                Console.WriteLine($"Length: {videoLengths[i]}");
+                Console.WriteLine($"Region(s): {videoRegions[i]}");
+                Console.WriteLine();
             }
         }
 
+
         public override void Read()
         {
-            var video = new Video();
-            var sr = new StreamReader(file);
+            StreamReader sr = new StreamReader("videos.csv");
             sr.ReadLine();
+
             while (!sr.EndOfStream)
             {
-                var line = sr.ReadLine();
+                string line = sr.ReadLine();
+                int idx = line.IndexOf('"');
+                if (idx == -1)
+                {
+                    string[] movieDetails = line.Split(',');
+                    videoIds.Add(int.Parse(movieDetails[0]));
+                    videoTitles.Add(movieDetails[1]);
+                    videoFormats.Add(movieDetails[2].Replace("|", ", "));
+                    videoLengths.Add(int.Parse(movieDetails[3]));
+                    videoRegions.Add(movieDetails[4].Replace("|", ", "));
+                }
 
-                var videoInfo = line.Split(',');
-
-                //var movie = new Movie();
-                video.Id = videoInfo[0];
-                video.Title = videoInfo[1];
-                video.Format = videoInfo[2];
-                video.Length = videoInfo[3];
-                video.Regions = videoInfo[3];
-
-
-                _video.Add(video);
             }
+            sr.Close(); ;
         }
     }
 }

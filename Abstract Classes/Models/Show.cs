@@ -9,51 +9,50 @@ namespace Abstract_Classes.Models
 {
     public class Show : Media
     {
-        string file = "show.csv";
-        private List<Show> _show;
+        public int Episode { get; set; }
+        public int Season { get; set; }
+        public string Writers { get; set; }
 
-        public string Episode;
-        public string Season;
-        public string Writers;
-
-        public Show()
-        {
-            _show = new List<Show>();
-            Read();
-        }
+        List<int> showIds = new List<int>();
+        List<string> showTitles = new List<string>();
+        List<int> showEpisodes = new List<int>();
+        List<int> showSeasons = new List<int>();
+        List<string> showWriters = new List<string>();
 
         public override void Display()
         {
-            foreach (var show in _show)
+            for (int i = 0; i < showIds.Count; i++)
             {
-                Console.WriteLine($"ID: {show.Id}, Title: {show.Title}, Season: {show.Season}, Episode: {show.Episode}, Writers: {show.Writers}");
-
+                Console.WriteLine($"Id: {showIds[i]}");
+                Console.WriteLine($"Title: {showTitles[i]}");
+                Console.WriteLine($"Episodes: {showEpisodes[i]}");
+                Console.WriteLine($"Seasons: {showSeasons[i]}");
+                Console.WriteLine($"Writer(s): {showWriters[i]}");
+                Console.WriteLine();
             }
-
-
         }
 
         public override void Read()
         {
-            var show = new Show();
-            var sr = new StreamReader(file);
+            StreamReader sr = new StreamReader("shows.csv");
             sr.ReadLine();
+
             while (!sr.EndOfStream)
             {
-                var line = sr.ReadLine();
+                string line = sr.ReadLine();
+                int idx = line.IndexOf('"');
+                if (idx == -1)
+                {
+                    string[] movieDetails = line.Split(',');
+                    showIds.Add(int.Parse(movieDetails[0]));
+                    showTitles.Add(movieDetails[1]);
+                    showEpisodes.Add(int.Parse(movieDetails[2]));
+                    showSeasons.Add(int.Parse(movieDetails[3]));
+                    showWriters.Add(movieDetails[4].Replace("|", ", "));
+                }
 
-                var showInfo = line.Split(',');
-
-                //var movie = new Movie();
-                show.Id = showInfo[0];
-                show.Title = showInfo[1];
-                show.Season = showInfo[2];
-                show.Episode = showInfo[3];
-                show.Writers = showInfo[4];
-
-
-                _show.Add(show);
             }
+            sr.Close();
         }
     }
 }

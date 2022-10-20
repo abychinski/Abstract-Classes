@@ -10,46 +10,52 @@ namespace Abstract_Classes.Models
 {
     public class Movie : Media
     {
-        string file = "movie.csv";
-        private List<Movie> _movies;
-        public string Genre;
-
-        public Movie()
-        {
-            _movies = new List<Movie>();
-            Read();
-
-        }
-        public override void Read()
-        {
-            var movie = new Movie();
-            var sr = new StreamReader(file);
-            sr.ReadLine();
-            while (!sr.EndOfStream)
-            {
-                var line = sr.ReadLine();
-
-                var movieInfo = line.Split(',');
-
-                //var movie = new Movie();
-                movie.Id = movieInfo[0];
-                movie.Title = movieInfo[1];
-                movie.Genre = movieInfo[2].Replace("|",",");
-
-
-                _movies.Add(movie);
-            }
-
-        }
-       
+        List<int> movieIds = new List<int>();
+        List<string> movieTitles = new List<string>();
+        List<string> movieGenres = new List<string>();
+        public string Genres { get; set; }
 
         public override void Display()
         {
-            foreach (var movie in _movies)
+            for (int i = 0; i < movieIds.Count; i++)
             {
-                Console.WriteLine($"ID: {movie.Id}, Title: {movie.Title}, Genre: {movie.Genre}");
 
+                Console.WriteLine($"Id: {movieIds[i]}");
+                Console.WriteLine($"Title: {movieTitles[i]}");
+                Console.WriteLine($"Genre(s): {movieGenres[i]}");
+                Console.WriteLine();
             }
+        }
+
+        public override void Read()
+        {
+
+            StreamReader sr = new StreamReader("movies.csv");
+            sr.ReadLine();
+
+            while (!sr.EndOfStream)
+            {
+                string line = sr.ReadLine();
+                int idx = line.IndexOf('"');
+                if (idx == -1)
+                {
+                    string[] movieDetails = line.Split(',');
+                    movieIds.Add(int.Parse(movieDetails[0]));
+                    movieTitles.Add(movieDetails[1]);
+                    movieGenres.Add(movieDetails[2].Replace("|", ", "));
+                }
+                else
+                {
+
+                    movieIds.Add(int.Parse(line.Substring(0, idx - 1)));
+                    line = line.Substring(idx + 1);
+                    idx = line.IndexOf('"');
+                    movieTitles.Add(line.Substring(0, idx));
+                    line = line.Substring(idx + 2);
+                    movieGenres.Add(line.Replace("|", ", "));
+                }
+            }
+            sr.Close();
         }
 
     }
