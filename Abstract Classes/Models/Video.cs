@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,6 +10,8 @@ namespace Abstract_Classes.Models
 {
     public class Video : Media
     {
+        private List<Video> video;
+
         public string Format { get; set; }
         public int Length { get; set; }
 
@@ -57,6 +60,13 @@ namespace Abstract_Classes.Models
 
             }
             sr.Close(); ;
+        }
+        public override Media Search(string searching)
+        {
+            Read();
+            return video.FirstOrDefault(m => m.Title.Contains(searching, StringComparison.CurrentCultureIgnoreCase));
+
+
         }
     }
 }

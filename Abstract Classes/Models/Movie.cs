@@ -10,6 +10,10 @@ namespace Abstract_Classes.Models
 {
     public class Movie : Media
     {
+
+        public List<Movie> movie;
+       
+
         List<int> movieIds = new List<int>();
         List<string> movieTitles = new List<string>();
         List<string> movieGenres = new List<string>();
@@ -56,6 +60,10 @@ namespace Abstract_Classes.Models
                 }
             }
             sr.Close();
+        }
+        public override Media Search(string searching)
+        {
+            return movie.FirstOrDefault(m => m.Title.Contains(searching, StringComparison.CurrentCultureIgnoreCase));
         }
 
     }

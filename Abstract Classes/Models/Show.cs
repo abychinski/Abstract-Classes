@@ -9,6 +9,8 @@ namespace Abstract_Classes.Models
 {
     public class Show : Media
     {
+        private List<Show> show;
+
         public int Episode { get; set; }
         public int Season { get; set; }
         public string Writers { get; set; }
@@ -49,10 +51,17 @@ namespace Abstract_Classes.Models
                     showEpisodes.Add(int.Parse(movieDetails[2]));
                     showSeasons.Add(int.Parse(movieDetails[3]));
                     showWriters.Add(movieDetails[4].Replace("|", ", "));
+
+
                 }
 
             }
             sr.Close();
+        }
+        public override Media Search(string searching)
+        {
+            Read();
+            return show.FirstOrDefault(m => m.Title.Contains(searching, StringComparison.CurrentCultureIgnoreCase));
         }
     }
 }

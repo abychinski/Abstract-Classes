@@ -1,53 +1,71 @@
-﻿using System;
-using System.Net.NetworkInformation;
-using System.Xml.Linq;
-using Abstract_Classes.Models;
+﻿using Abstract_Classes.Models;
+using System;
+using System.ComponentModel.Design;
 
 namespace Abstract_Classes
 {
     internal class Program
     {
-            
+
         static void Main(string[] args)
         {
             string input;
-            do
+            string searching;
+            Movie movie = new Movie();
+            movie.Read();
+            Show show = new Show();
+            show.Read();
+            Video video = new Video();
+            video.Read();
             {
                 Console.WriteLine("What kind of media do you want to see?");
-                Console.WriteLine("Press 1 for movies, 2 for TV shows,  3 for home video, or 4 to exit.");
-               
+                Console.WriteLine("Press 1 for movies, 2 for TV shows,  3 for home video, 4 to search or 5 to exit.");
+
                 input = Console.ReadLine();
 
-                switch (input)
+                if (input == "1")
                 {
-                    case "1":
-                        Console.WriteLine(" \n Displaying Movies: \n");
+                    Media movies = new Movie();
+                    movies.Read();
+                    movies.Display();
+                }
+                
+                else if (input == "2")
+                {
+                    Media shows = new Show();
+                    shows.Read();
+                    shows.Display();
+                }
+                
+                else if (input == "3")
+                {
+                    Media videos = new Video();
+                    videos.Read();
+                    videos.Display();
 
-                        Media movies = new Movie();
-                        movies.Read();
-                        movies.Display();
+                }
+                else if (input == "4")
+                {
+                  
+                    Console.WriteLine("What would you like to search for?");
+                    searching = Console.ReadLine();
 
-                        break;
-                    case "2":
-                        Console.WriteLine("\n Displaying TV Shows: \n");
-                        Media shows = new Show();
-                        shows.Read();
-                        shows.Display();
-                        break;
-                    case "3":
-                        Console.WriteLine("\n Displaying Videos: \n");
-                        Media videos = new Video();
-                        videos.Read();
-                        videos.Display();
-                        break;
 
-                    default:
-                        Console.WriteLine("Please Choose 1, 2, 3 or 4");
-                        break;
+                    Console.WriteLine(movie.Search(searching));
+                    Console.WriteLine(show.Search(searching));
+                    Console.WriteLine(video.Search(searching));
+
+
                 }
 
-            } while (input != "4");
+                else
+                {
+                    Console.WriteLine("Please Choose 1, 2, 3, 4, or 5");
+                }
 
+
+
+            }
         }
     }
 }

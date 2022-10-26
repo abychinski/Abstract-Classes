@@ -14,7 +14,7 @@ namespace Abstract_Classes.Models
         public abstract void Display();
         public abstract void Read();
 
-
+        public abstract Media Search(string searching);
 
     }
 }
